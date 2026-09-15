@@ -1,0 +1,110 @@
+{
+  "theme": "Baloch Heritage Canada",
+  "demoData": {
+    "heroSection": {
+      "title": "Welcome to Baloch Heritage Canada",
+      "subtitle": "Celebrating our culture, connecting our community, and building a brighter future together.",
+      "buttons": [
+        {
+          "text": "Join Our Community",
+          "url": "/membership",
+          "style": "primary"
+        },
+        {
+          "text": "Discover Our Culture",
+          "url": "/culture",
+          "style": "secondary"
+        }
+      ],
+      "image": "images/hero-panorama.png"
+    },
+    "statsBand": [
+      {
+        "label": "Active Members",
+        "value": "1,500+"
+      },
+      {
+        "label": "Cities Across Canada",
+        "value": "12"
+      },
+      {
+        "label": "Annual Events",
+        "value": "24+"
+      },
+      {
+        "label": "Established",
+        "value": "1995"
+      }
+    ],
+    "aboutSection": {
+      "title": "Our Mission",
+      "content": "The Baloch Cultural Society of Canada is dedicated to preserving, promoting, and celebrating the rich heritage of the Baloch people. We aim to foster a strong, supportive, and inclusive community for all generations of Baloch Canadians, while sharing our beautiful traditions with the diverse Canadian mosaic.",
+      "values": [
+        "Cultural Preservation",
+        "Community Support",
+        "Inclusivity",
+        "Youth Empowerment"
+      ],
+      "callToAction": {
+        "text": "Learn More About Us",
+        "url": "/about"
+      }
+    },
+    "cultureCards": [
+      {
+        "title": "Traditional Textiles (Doch)",
+        "description": "Explore the vibrant colors, intricate geometric patterns, and exquisite mirror work that define traditional Baloch embroidery, a craft passed down through generations.",
+        "image": "images/textiles.png"
+      },
+      {
+        "title": "Baloch Cuisine",
+        "description": "Savor the rich flavors of Balochistan, from our world-famous Sajji (roasted lamb or chicken) to aromatic spiced rice and freshly baked traditional flatbreads.",
+        "image": "images/cuisine.png"
+      },
+      {
+        "title": "Music & Instruments",
+        "description": "Discover the soulful melodies of Baloch music, featuring traditional instruments like the Suroz and Danburo that carry the stories and poems of our ancestors.",
+        "image": "images/music.png"
+      }
+    ],
+    "historyTimeline": [
+      {
+        "year": "1980s",
+        "event": "Early Arrivals",
+        "description": "The first major wave of Baloch students and professionals begin arriving in Canada, settling primarily in Toronto and Vancouver."
+      },
+      {
+        "year": "1995",
+        "event": "Society Founded",
+        "description": "The Baloch Cultural Society of Canada is officially established to help preserve cultural identity and support new immigrants."
+      },
+      {
+        "year": "2010",
+        "event": "National Recognition",
+        "description": "The first national Baloch Cultural Festival is held in Ottawa, attracting attendees from across North America."
+      },
+      {
+        "year": "2023",
+        "event": "Community Center Opens",
+        "description": "Opening of the dedicated Baloch Community Center, serving as a hub for language classes, cultural events, and youth programs."
+      }
+    ],
+    "resourcesSection": [
+      {
+        "title": "Balochi Language Classes",
+        "description": "Weekly classes for youth and adults to learn and practice speaking, reading, and writing Balochi.",
+        "link": "/resources/language"
+      },
+      {
+        "title": "Newcomer Settlement Support",
+        "description": "Assistance for new Baloch immigrants, including help with housing, employment, and navigating Canadian systems.",
+        "link": "/resources/settlement"
+      },
+      {
+        "title": "Youth Mentorship Program",
+        "description": "Connecting young Baloch Canadians with established professionals in various fields for guidance and support.",
+        "link": "/resources/mentorship"
+      }
+    ]
+  }
+}

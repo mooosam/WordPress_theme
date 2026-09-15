@@ -1,0 +1,17 @@
+/*
+Theme Name: Baloch Heritage Canada
+Theme URI: https://balochheritage.org
+Author: Baloch Cultural Society of Canada
+Author URI: https://balochheritage.org
+Description: Official theme for the Baloch Cultural Society of Canada website. Features custom post types for Events, Articles, Resources, and Leadership profiles, plus a full membership system with multi-level approval workflow.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: baloch-heritage
+Tags: cultural, community, custom-post-types, membership, multilingual, responsive
+*/
+
+/* Theme styles are loaded via functions.php — see assets/css/baloch-shared.css */
