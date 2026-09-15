@@ -211,6 +211,42 @@ function initParallax() {
   }, { passive: true });
 }
 
+/* ─── HISTORY SCROLL STORY ─── */
+function initHistoryStory() {
+  const section = document.getElementById('history');
+  const timeline = section?.querySelector('.timeline');
+  const steps = [...(timeline?.querySelectorAll('.timeline-item') || [])];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (!section || !timeline || !steps.length || reduceMotion.matches) return;
+  section.classList.add('history-scroll-ready');
+
+  let ticking = false;
+  const updateStory = () => {
+    const rect = timeline.getBoundingClientRect();
+    const viewport = window.innerHeight || document.documentElement.clientHeight;
+    const travel = Math.max(1, rect.height + viewport * 0.35);
+    const progress = Math.max(0, Math.min(1, (viewport * 0.72 - rect.top) / travel));
+
+    section.style.setProperty('--history-progress', progress.toFixed(4));
+    steps.forEach((step, index) => {
+      const threshold = index / Math.max(1, steps.length - 1);
+      step.classList.toggle('is-active', progress >= threshold - 0.05);
+    });
+    ticking = false;
+  };
+  const requestUpdate = () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateStory);
+    }
+  };
+
+  updateStory();
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+}
+
 /* ─── FORM VALIDATION ─── */
 function validateForm(formEl) {
   let valid = true;
@@ -302,4 +338,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initLightbox();
   initModals();
   initParallax();
+  initHistoryStory();
 });
