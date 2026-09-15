@@ -117,7 +117,7 @@ $hero_img = !empty($hero['image'])
           <?php if ($about_page && has_post_thumbnail($about_page->ID)):
             echo get_the_post_thumbnail($about_page->ID, 'bh-card');
           else: ?>
-            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/community-hero.webp'); ?>" alt="<?php esc_attr_e('Baloch Canadian community gathering', 'baloch-heritage'); ?>" loading="lazy">
+            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/youth-workshop.webp'); ?>" alt="<?php esc_attr_e('Baloch Canadian youth learning together', 'baloch-heritage'); ?>" loading="lazy">
           <?php endif; ?>
         </div>
       </div>
@@ -177,7 +177,7 @@ $hero_img = !empty($hero['image'])
       <?php
       $culture_items = !empty($demo_data['cultureCards']) ? $demo_data['cultureCards'] : [
         ['title'=>'Textiles & Doch','description'=>'Balochi embroidery (Doch) features intricate geometric patterns — a living tradition shared across generations.','url'=>home_url('/culture/'),'color'=>'cc1','theme_image'=>'doch-textiles.webp'],
-        ['title'=>'Cuisine & Hospitality','description'=>'Sajji, Dampukht, Kaak bread — Balochi cuisine reflects a culture where hospitality (Melmastia) is sacred.','url'=>home_url('/culture/'),'color'=>'cc2'],
+        ['title'=>'Cuisine & Hospitality','description'=>'Sajji, Dampukht, Kaak bread — Balochi cuisine reflects a culture where hospitality (Melmastia) is sacred.','url'=>home_url('/culture/'),'color'=>'cc2','theme_image'=>'community-meal.webp'],
         ['title'=>'Music & Dance','description'=>'Damburag strings, Soroz melodies, and the powerful Lewa folk dance — the living sound of Baloch culture.','url'=>home_url('/gallery/'),'color'=>'cc3','theme_image'=>'balochi-music.webp'],
       ];
       $colors = ['cc1', 'cc2', 'cc3'];
@@ -207,7 +207,7 @@ $hero_img = !empty($hero['image'])
 
 <?php if (bh_section_enabled('history')): ?>
 <!-- HISTORY TIMELINE -->
-<section id="history" style="background:var(--maroon-dark);position:relative;overflow:hidden;">
+<section id="history" class="history-story" style="background:var(--maroon-dark);position:relative;overflow:hidden;">
   <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.018) 0,rgba(255,255,255,0.018) 1px,transparent 1px,transparent 28px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.018) 0,rgba(255,255,255,0.018) 1px,transparent 1px,transparent 28px);pointer-events:none;"></div>
   <div class="container" style="position:relative;z-index:1;">
     <div class="section-header center reveal" style="margin-bottom:2rem;">
@@ -347,8 +347,7 @@ $hero_img = !empty($hero['image'])
         </div>
       </div>
       <?php endwhile; wp_reset_postdata();
-      else: // Fallback
-        $ev_fallback = [
+      else: // Fallback        $ev_fallback = [
           ['02','Nov 2025','var(--maroon)','International Baloch Day','Aurora Event Centre, Ontario','Annual celebration of Baloch pride with performances, food, and community.'],
           ['28','Oct 2025','var(--terra)','Annual Cultural Festival','Toronto Convention Centre','Our flagship festival with Balochi music, dance, and traditional cuisine.'],
           ['12','Dec 2025','#2A5A1A','Balochi Music Night','Vancouver Arts Centre, BC','Damburag and Soroz music, Lewa dance and folk performances.'],        ];
