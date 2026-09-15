@@ -347,8 +347,7 @@ function bh_render_admin_page() {
 function bh_form_open($tab) {
     echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="bh-form">';
     echo '<input type="hidden" name="action" value="bh_save_settings">';
-    echo '<input type="hidden" name="tab" value="' . esc_attr($tab) . '">';
-    wp_nonce_field('bh_save_settings', 'bh_nonce');
+    echo '<input type="hidden" name="tab" value="' . esc_attr($tab) . '">';    wp_nonce_field('bh_save_settings', 'bh_nonce');
 }
 function bh_form_close($label = null) {
     if (!$label) $label = __('Save changes', 'baloch-heritage');
@@ -697,7 +696,6 @@ function bh_tab_menus($opts) {
 /* ═══════════════════════════════════════════════════════
    TAB: ELEMENTOR
    ═══════════════════════════════════════════════════════ */
-
 function bh_tab_elementor($opts) {
     $is_active     = did_action('elementor/loaded');
     $is_pro_active = defined('ELEMENTOR_PRO_VERSION');
@@ -936,11 +934,11 @@ function bh_tab_tools($opts) {
         <div class="bh-card">
             <h3><?php esc_html_e('Generate Demo Content', 'baloch-heritage'); ?></h3>
             <p class="bh-card-sub"><?php esc_html_e('Creates standard pages, sets the homepage, configures permalinks, and adds dummy events/leaders.', 'baloch-heritage'); ?></p>
-            <?php if (get_option('bh_demo_imported')): ?>
-                <span style="color:var(--orange);">✓ <?php esc_html_e('Demo data already imported.', 'baloch-heritage'); ?></span>
-            <?php else: ?>
-                <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=bh_generate_demo'), 'bh_demo')); ?>" class="bh-btn bh-btn-primary" onclick="return confirm('This will create dummy pages and posts. Continue?');"><?php esc_html_e('Import Data', 'baloch-heritage'); ?></a>
+            <?php $demo_is_imported = (bool) get_option('bh_demo_imported'); ?>
+            <?php if ($demo_is_imported): ?>
+                <p class="bh-card-sub"><?php esc_html_e('Demo data was previously generated. You can safely run this again to repair any missing demo pages, menu items, or sample content.', 'baloch-heritage'); ?></p>
             <?php endif; ?>
+            <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=bh_generate_demo'), 'bh_demo')); ?>" class="bh-btn bh-btn-primary" onclick="return confirm('This will create any missing demo pages and content. Existing demo items will not be duplicated. Continue?');"><?php echo $demo_is_imported ? esc_html__('Repair Demo Data', 'baloch-heritage') : esc_html__('Import Data', 'baloch-heritage'); ?></a>
         </div>
     </div>
 
@@ -1047,8 +1045,7 @@ add_action('admin_post_bh_reset_settings', function () {
     check_admin_referer('bh_reset');
     delete_option('bh_theme_options');
     wp_safe_redirect(add_query_arg(['page' => 'bh-theme', 'tab' => 'tools', 'saved' => 1], admin_url('admin.php')));
-    exit;
-});
+    exit;});
 
 add_action('admin_post_bh_flush_rewrites', function () {
     if (!current_user_can('manage_options')) wp_die('No.');
@@ -1062,10 +1059,8 @@ add_action('admin_post_bh_generate_demo', function () {
     if (!current_user_can('manage_options')) wp_die('No.');
     check_admin_referer('bh_demo');
 
-    if (get_option('bh_demo_imported')) {
-        wp_safe_redirect(add_query_arg(['page' => 'bh-theme', 'tab' => 'tools', 'saved' => 1], admin_url('admin.php')));
-        exit;
-    }
+    // This importer is intentionally safe to re-run: it restores missing demo items
+    // without creating duplicates, so an interrupted import can be repaired.
 
     // 1. Set Permalinks
     update_option('permalink_structure', '/%postname%/');
@@ -1093,7 +1088,9 @@ add_action('admin_post_bh_generate_demo', function () {
                 'post_status'  => 'publish',
                 'post_type'    => 'page',
             ]);
-            $page_ids[$slug] = $id;
+            if (!is_wp_error($id) && $id) {
+                $page_ids[$slug] = $id;
+            }
         } else {
             $page_ids[$slug] = $existing->ID;
         }
@@ -1112,12 +1109,17 @@ add_action('admin_post_bh_generate_demo', function () {
         ['title' => 'Youth Leadership Summit', 'date' => '+45 days', 'loc' => 'Calgary Community Hall', 'type' => 'youth'],
     ];
     foreach ($dummy_events as $ev) {
-        $id = wp_insert_post([
+        $existing = get_posts([
+            'post_type' => 'bh_event', 'post_status' => 'any', 'name' => sanitize_title($ev['title']),
+            'fields' => 'ids', 'posts_per_page' => 1,
+        ]);
+        $id = $existing ? (int) $existing[0] : wp_insert_post([
             'post_title'   => $ev['title'],
             'post_status'  => 'publish',
             'post_type'    => 'bh_event',
             'post_excerpt' => 'Join us for this wonderful event bringing the community together.',
         ]);
+        if (is_wp_error($id) || !$id) continue;
         update_post_meta($id, '_bh_event_date', date('Y-m-d', strtotime($ev['date'])));
         update_post_meta($id, '_bh_event_location', $ev['loc']);
         update_post_meta($id, '_bh_event_type', $ev['type']);
@@ -1130,12 +1132,17 @@ add_action('admin_post_bh_generate_demo', function () {
         ['title' => 'Farhan Mengal', 'role' => 'Community Director'],
     ];
     foreach ($dummy_leaders as $idx => $ld) {
-        $id = wp_insert_post([
+        $existing = get_posts([
+            'post_type' => 'bh_leadership', 'post_status' => 'any', 'name' => sanitize_title($ld['title']),
+            'fields' => 'ids', 'posts_per_page' => 1,
+        ]);
+        $id = $existing ? (int) $existing[0] : wp_insert_post([
             'post_title'   => $ld['title'],
             'post_status'  => 'publish',
             'post_type'    => 'bh_leadership',
             'post_excerpt' => 'Dedicated to preserving our culture and empowering the next generation.',
         ]);
+        if (is_wp_error($id) || !$id) continue;
         update_post_meta($id, '_bh_leader_title', $ld['role']);
         update_post_meta($id, '_bh_leader_order', $idx + 1);
     }
@@ -1146,12 +1153,17 @@ add_action('admin_post_bh_generate_demo', function () {
         ['title' => 'Community Scholarship Form', 'type' => 'education'],
     ];
     foreach ($dummy_resources as $res) {
-        $id = wp_insert_post([
+        $existing = get_posts([
+            'post_type' => 'bh_resource', 'post_status' => 'any', 'name' => sanitize_title($res['title']),
+            'fields' => 'ids', 'posts_per_page' => 1,
+        ]);
+        $id = $existing ? (int) $existing[0] : wp_insert_post([
             'post_title'   => $res['title'],
             'post_status'  => 'publish',
             'post_type'    => 'bh_resource',
             'post_excerpt' => 'A valuable resource for members of the Baloch Heritage community.',
         ]);
+        if (is_wp_error($id) || !$id) continue;
         update_post_meta($id, '_bh_resource_type', $res['type']);
     }
 
