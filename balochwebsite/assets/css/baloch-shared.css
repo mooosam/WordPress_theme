@@ -277,3 +277,60 @@ footer { background: var(--brown); padding: 4rem 0 2rem; color: rgba(255,255,255
   .stat-grid { grid-template-columns: 1fr 1fr; }
   .page-hero { min-height: 260px; }
 }
+
+/* ─── HISTORY SCROLL STORY ───
+   Progressive enhancement: all content remains present without JavaScript.
+*/
+#history.history-scroll-ready .timeline-line-fill {
+  height: calc(var(--history-progress, 0) * 100%) !important;
+  transition: height 90ms linear;
+}
+#history.history-scroll-ready .timeline-item .timeline-content {
+  opacity: 0.32;
+  filter: saturate(0.65);
+  transition: opacity 420ms ease, transform 520ms cubic-bezier(.2,.75,.2,1), filter 420ms ease;
+}
+#history.history-scroll-ready .timeline-item:nth-child(odd) .timeline-content {
+  transform: translateX(-22px);
+}
+#history.history-scroll-ready .timeline-item:nth-child(even) .timeline-content {
+  transform: translateX(22px);
+}
+#history.history-scroll-ready .timeline-item.is-active .timeline-content,
+#history.history-scroll-ready .timeline-item.is-active .timeline-content.visible {
+  opacity: 1;
+  filter: saturate(1);
+  transform: translateX(0);
+}
+#history.history-scroll-ready .timeline-item .timeline-dot-inner {
+  transform: scale(0.72);
+  opacity: 0.48;
+  transition: transform 360ms ease, opacity 360ms ease, box-shadow 360ms ease;
+}
+#history.history-scroll-ready .timeline-item.is-active .timeline-dot-inner,
+#history.history-scroll-ready .timeline-item.is-active .timeline-dot-inner.visible {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 0 0 8px rgba(224,123,57,0.13);
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #history .timeline-line-fill { height: 100% !important; }
+  #history .timeline-content,
+  #history .timeline-dot-inner {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+@media (max-width: 700px) {
+  #history.history-scroll-ready .timeline-item .timeline-content,
+  #history.history-scroll-ready .timeline-item:nth-child(odd) .timeline-content,
+  #history.history-scroll-ready .timeline-item:nth-child(even) .timeline-content {
+    transform: translateY(14px);
+  }
+  #history.history-scroll-ready .timeline-item.is-active .timeline-content {
+    transform: translateY(0);
+  }
+}
